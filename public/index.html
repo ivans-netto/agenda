@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html ng-app="agenda-dimed">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Agenda CRUD</title>
+
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/dist/css/agenda-dimed.min.css">
+</head>
+
+<body ng-controller="mainController">
+	<div class="container">
+		<div class="wrap-agenda">
+
+			<!-- HEADER -->
+			<div class="entries">
+				<h1 ng-if="todos.length > 0"><span class="number">{{todos.length}}</span> entries</h1>
+				<h1 ng-if="todos.length == 0"><span class="number">Nothing</span> to do, <br>be happy (:</h1>
+			</div>
+
+			<!-- FORM TO CREATE ITEMS -->
+			<div class="agenda-form row">
+				<div class="col-xs-12 text-center">
+					<form>
+						<div class="form-group">
+							<!-- FROM formData.text -->
+							<input type="text" class="entries-input pull-left" placeholder="Add a todo on agenda" ng-model="formData.text">
+							<!-- CREATE NEW TODOS -->
+							<button type="submit" class="btn-call-to-action pull-left" ng-click="createTodo()">Add</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- AGENDA LIST -->
+			<div class="row agenda-list">
+				<div class="col-sm-4 col-sm-offset-4">
+
+					<!-- REPEAT IN $scope.todos -->
+					<div class="each-item" ng-repeat="todo in todos">
+						<label class="item-checkbox pull-left">
+							<input type="checkbox" ng-click="deleteTodo(todo._id)">
+						</label>
+						<input type="text" ng-model="todo.text" ng-disabled="edit" class="task pull-left">
+						<button ng-click="updateAgenda(todo._id, todo.text)" ng-show="!edit" class="btn-call-to-action-2 pull-right">Save</button>
+						<button ng-click="edit = ! edit" ng-show="edit" class="btn-call-to-action-2 pull-right">Edit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- WHERE CLIENT-SIDE MAGIC HAPPENS -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+	<script src="/dist/js/agenda-dimed.min.js"></script> <!-- minified JS files -->
+</body>
+</html>

@@ -1,0 +1,255 @@
+/**
+*
+* MIXINS
+*
+**/
+
+
+/*==================================================
+=            transitions AND transforms            =
+==================================================*/
+
+/**
+
+	Some instrutions:
+	- Single props: A ~ prefix to escape the resulting expression (i.e. stop LESS from enclosing it in a string):
+		-> Usage example:
+		   .transition(~"width 0.32s ease 0.8s");
+	- Multiple props: Without ~ prefix.
+		-> Usage example:
+		   .transition(transform 0.4s cubic-bezier(.11,.69,.25,1.22) 0.3s, opacity 0.4s ease 0.3s);
+**/
+
+.transform(@value1,@value2:X,...){
+	@value: ~`"@{arguments}"
+    					.replace(/[\[\]]|\,\sX/g, '')
+    					.replace('-webkit-', '')`;
+    @valueWebKit: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+
+	-webkit-transform:   @valueWebKit;
+	-moz-transform: 	 @value;
+	-ms-transform: 		 @value;
+	-o-transform: 		 @value;
+	transform: 			 @value;
+
+	-webkit-backface-visibility: hidden;
+}
+
+.transition(@value1,@value2:X,...) {
+    @value: ~`"@{arguments}"
+    					.replace(/[\[\]]|\,\sX/g, '')
+    					.replace('-webkit-', '')`;
+    @valueWebKit: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+
+    -webkit-transition: @valueWebKit;
+    -moz-transition: @value;
+    -o-transition: @value;
+    transition: @value;
+}
+
+.transition-delay(@string) {
+	-webkit-transition-delay: @string;
+	-o-transition-delay: @string;
+	transition-delay: @string;
+}
+
+/*-----  End of transitions AND transforms  ------*/
+
+
+/*=========================================
+=            animations mixins            =
+=========================================*/
+
+.perspective(@string) {
+	-webkit-perspective: @string;
+	-moz-perspective: @string;
+	-ms-perspective: @string;
+	-o-perspective: @string;
+	perspective: @string;
+}
+.transform-origin(@string) {
+    -webkit-transform-origin: @string;
+    -moz-transform-origin: @string;
+    -o-transform-origin: @string;
+    transform-origin: @string;
+}
+.backface(@string: hidden) {
+	-webkit-backface-visibility: @string;
+	-moz-backface-visibility: @string;
+	-ms-backface-visibility: @string;
+	backface-visibility: @string;
+}
+.filter(@string) {
+	-webkit-filter: @string;
+	-o-filter: @string;
+	filter: @string;
+}
+.destroy-fucking-list() {
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+.displaytable-full() {
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+.displaytable() {
+	display: table;
+}
+.middle() {
+	display: table-cell;
+	vertical-align: middle;
+}
+.growup-span() {
+	display: block;
+	width: 100%;
+}
+.square(@value) {
+	width: @value;
+	height: @value;
+}
+.rectangle(@width, @height) {
+	width: @width;
+	height: @height;
+}
+.border-angular(@top-left, @top-right, @bottom-right, @bottom-left) {
+	// vars on clock wise
+	border-top-left-radius: @top-left;
+	border-top-right-radius: @top-right;
+	border-bottom-right-radius: @bottom-right;
+	border-bottom-left-radius: @bottom-left;
+}
+.box-shadow(@string) {
+	-webkit-box-shadow: @string;
+	-moz-box-shadow:    @string;
+	box-shadow:         @string;
+}
+.text-shadow (@string) {
+	text-shadow: @string;
+}
+.text-center() {
+	text-align: center;
+}
+.opacity (@opacity) {
+	-webkit-opacity: 	@opacity;
+	-moz-opacity: 		@opacity;
+	-ms-opacity: 		@opacity;
+	-o-opacity: 		@opacity;
+	opacity: 	     	@opacity;
+}
+.box-shadow(@value) {
+    -webkit-box-shadow: @value;
+       -moz-box-shadow: @value;
+            box-shadow: @value;
+}
+.transition(@value) {
+    -webkit-transition: @value;
+       -moz-transition: @value;
+         -o-transition: @value;
+            transition: @value;
+}
+.box-sizing(@value) {
+    -webkit-box-sizing: @value;
+       -moz-box-sizing: @value;
+            box-sizing: @value;
+}
+.border-radius(@value) {
+    -webkit-border-radius: @value;
+       -moz-border-radius: @value;
+         -o-border-radius: @value;
+            border-radius: @value;
+}
+.placeholder(@color) {
+    &::-webkit-input-placeholder {
+       color: @color;
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+       color: @color;
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+       color: @color;
+    }
+
+    &:-ms-input-placeholder {
+       color: @color;
+    }
+}
+.field-autofill_bg-color(@bg, @color) {
+    &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px @bg inset;
+        -webkit-text-fill-color: @color;
+    }
+}
+.keyframes(@name; @arguments) {
+    @-moz-keyframes @name { @arguments(); }
+    @-webkit-keyframes @name { @arguments(); }
+    @keyframes @name { @arguments(); }
+}
+.animation(@arguments) {
+    -webkit-animation: @arguments;
+    -moz-animation: @arguments;
+    animation: @arguments;
+}
+.finite-animation() {
+    -webkit-animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+
+/**
+ *
+ * FOR EACH
+ *
+ */
+//doc: https://github.com/ivans-netto/less.curious/blob/master/articles/for-each.md
+
+//for
+.for(@i, @n) {.-each(@i)}
+.for(@n)     when (isnumber(@n)) {.for(1, @n)}
+.for(@i, @n) when not (@i = @n)  {
+    .for((@i + (@n - @i) / abs(@n - @i)), @n);
+}
+// .for-each
+.for(@array)   when (default()) {.for-impl_(length(@array))}
+.for-impl_(@i) when (@i > 1)    {.for-impl_((@i - 1))}
+
+.font-face (@fontPath, @fontname) {
+    @font-face {
+        font-family: @fontname;
+        src: url('../fonts/@{fontPath}.eot');
+        src: url('../fonts/@{fontPath}.eot?#iefix') format('embedded-opentype'),
+             url('../fonts/@{fontPath}.woff2') format('woff2'),
+             url('../fonts/@{fontPath}.woff') format('woff'),
+             url('../fonts/@{fontPath}.ttf') format('truetype'),
+             url('../fonts/@{fontPath}.svg#@{fontPath}') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
+.icon-font (@fontname) {
+    @font-face {
+        font-family: @fontname;
+        src: url('../fonts/@{fontname}.eot');
+        src: url('../fonts/@{fontname}.eot?#iefix') format('embedded-opentype'),
+             url('../fonts/@{fontname}.svg#@{fontname}') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
+
+
+
+.media(@maxWidth; @rules) {
+    @media only screen and (max-width: @maxWidth) {
+        @rules();
+    }
+}
+// usage:
+//  .responsive(450px, {
+//      float: left;
+//      margin-top: 10px;
+//  });
